@@ -8,10 +8,12 @@ zipFilePath = "./data/household_power_consumption.zip"
 txtFilePath = "./household_power_consumption.txt"
 if(!file.exists(zipFilePath)){download.file(fileUrl, zipFilePath)}
 if(!file.exists(txtFilePath)){unzip(zipFilePath)}
-hpc <- read.table(txtFilePath,header = TRUE, sep = ";", na.strings = "?")
+hpc1 <- read.table(txtFilePath,header = TRUE, sep = ";", na.strings = "?", nrows = 70000)
+#subset data
+hpc1 <- subset(hpc1, Date == "1/2/2007" | Date == "2/2/2007")
 
-png("plot1.png")
-hist(hpc$Global_active_power, col = "red", xlim = c(0,6), ylim = c(0,1200000),breaks = 24, main = "Global Active Power", xlab = "Global Active Power (kilowatts)")
+png("plot1.png",width = 480,height = 480,units = "px")
+hist(hpc1$Global_active_power, col = "red", main = "Global Active Power", xlab = "Global Active Power (kilowatts)")
 dev.off()
 
 

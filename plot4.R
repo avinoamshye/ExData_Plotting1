@@ -8,15 +8,14 @@ txtFilePath = "./household_power_consumption.txt"
 if(!file.exists(zipFilePath)){download.file(fileUrl, zipFilePath)}
 if(!file.exists(txtFilePath)){unzip(zipFilePath)}
 
-#load data 40000 rows for lightness 
-hpc <- read.table(txtFilePath,header = TRUE, sep = ";", na.strings = "?", nrows = 40000)
-#include only relevant columns and rows for lightness
-hpc4 <- hpc[36000:39500,]
+#load data 
+hpc4 <- read.table(txtFilePath,header = TRUE, sep = ";", na.strings = "?", nrows = 70000)
+#subset data
+hpc4 <- subset(hpc4, Date == "1/2/2007" | Date == "2/2/2007")
 #add appropriate DateTime format column
 hpc4["POSIXct"] <- as.POSIXct(with(hpc4, paste(Date,Time)), format = "%d/%m/%Y %H:%M:%OS")
-
 #create png file
-png("plot4.png")
+png("plot4.png",width = 480,height = 480,units = "px")
 par(mfrow = c(2,2))
 
 #plot1:

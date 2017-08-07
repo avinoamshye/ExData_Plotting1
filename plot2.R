@@ -10,13 +10,13 @@ if(!file.exists(zipFilePath)){download.file(fileUrl, zipFilePath)}
 if(!file.exists(txtFilePath)){unzip(zipFilePath)}
 
 #load data
-hpc <- read.table(txtFilePath,header = TRUE, sep = ";", na.strings = "?")
-#trim data lines to include a two day period, and only relevant columns for lightness
-hpc2 <- with(hpc[36000:39500,], data.frame(Date, Time, Global_active_power))
+hpc2 <- read.table(txtFilePath,header = TRUE, sep = ";", na.strings = "?", nrows = 70000)
+#subset data
+hpc2 <- subset(hpc1, Date == "1/2/2007" | Date == "2/2/2007")
 #add appropriate DateTime format column
 hpc2["POSIXct"] <- as.POSIXct(with(hpc2, paste(Date,Time)), format = "%d/%m/%Y %H:%M:%OS")
 #create png file
-png("plot2.png")
+png("plot2.png",width = 480,height = 480,units = "px")
 with(hpc2, plot(POSIXct,Global_active_power, type = "l", ylab = "Global Active Power (kilowatts)", xlab = ""))
 dev.off()
 
